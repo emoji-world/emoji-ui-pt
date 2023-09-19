@@ -13,6 +13,8 @@ import {
   zora,
 } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
+import { ConfigProvider } from 'antd'; 
+import Layout from './_layout';
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
@@ -42,11 +44,13 @@ const wagmiConfig = createConfig({
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains}>
-        <Component {...pageProps} />
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <ConfigProvider>
+      <WagmiConfig config={wagmiConfig}>
+        <RainbowKitProvider chains={chains}>
+          <Layout Component={Component} pageProps={pageProps} />
+        </RainbowKitProvider>
+      </WagmiConfig>
+    </ConfigProvider>
   );
 }
 
