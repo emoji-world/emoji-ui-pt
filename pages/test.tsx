@@ -1,5 +1,8 @@
 import type { NextPage } from 'next';
+import { Button } from 'antd';
 
 export default (() => {
-  return <div>你好，世界</div>;
+  return <div>
+    <Button>请点击我</Button>
+  </div>;
 }) as NextPage;
