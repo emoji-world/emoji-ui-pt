@@ -1,6 +1,6 @@
 import '../styles/globals.scss';
 import '@rainbow-me/rainbowkit/styles.css';
-import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { getDefaultWallets, RainbowKitProvider, lightTheme } from '@rainbow-me/rainbowkit';
 import type { AppProps } from 'next/app';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import {
@@ -15,6 +15,7 @@ import {
 import { publicProvider } from 'wagmi/providers/public';
 import { ConfigProvider } from 'antd'; 
 import Layout from '../layout';
+import { useEffect } from 'react';
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
@@ -43,6 +44,10 @@ const wagmiConfig = createConfig({
 });
 
 function MyApp({ Component, pageProps }: AppProps) {
+  useEffect(() => {
+    console.log(lightTheme());
+  }, []);
+
   return (
     <ConfigProvider theme={{
       token: {
@@ -50,7 +55,11 @@ function MyApp({ Component, pageProps }: AppProps) {
       },
     }}>
       <WagmiConfig config={wagmiConfig}>
-        <RainbowKitProvider chains={chains}>
+        <RainbowKitProvider
+          chains={chains}
+          theme={lightTheme({
+            borderRadius: 'medium',
+          })}>
           <Layout Component={Component} pageProps={pageProps} />
         </RainbowKitProvider>
       </WagmiConfig>
