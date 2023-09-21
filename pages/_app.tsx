@@ -44,7 +44,11 @@ const wagmiConfig = createConfig({
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ConfigProvider>
+    <ConfigProvider theme={{
+      token: {
+        colorPrimary: '#ffbd2c',
+      },
+    }}>
       <WagmiConfig config={wagmiConfig}>
         <RainbowKitProvider chains={chains}>
           <Layout Component={Component} pageProps={pageProps} />

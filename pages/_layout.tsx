@@ -34,6 +34,7 @@ export default ((props: any) => {
         </h1>
         <NavMenu />
       </Space>
+      <Button type="primary">你好</Button>
       <ConnectButton />
     </Header>
     <Content className="Content">
