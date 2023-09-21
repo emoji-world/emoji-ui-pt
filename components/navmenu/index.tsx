@@ -5,16 +5,16 @@ function NavMenu() {
   return <nav className={style.com}>
     <ol>
       <li>
-        <a href="https://www.google.com/">Game</a>
+        <a href="/">Game</a>
       </li>
       <li>
-        <a href="https://www.google.com/">Swap</a>
+        <a href="/swap">Swap</a>
       </li>
       <li>
-        <a href="https://www.google.com/">Finance</a>
+        <a href="/finance">Finance</a>
       </li>
       <li>
-        <a href="https://www.google.com/">News</a>
+        <a href="/news">News</a>
       </li>
     </ol>
   </nav>
