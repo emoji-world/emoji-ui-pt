@@ -1,18 +1,4 @@
-.head {
-  height: 3.6rem;
-  line-height: 3.6rem;
-}
-
-.logo {
-  @extend .head;
-  font-size: 2rem;
-  .haha {
-    font-size: 1.3rem;
-    margin: 0 2px;
-  }
-}
-
-.navmenu {
+.com {
   @extend .head;
   ol {
     @extend .head;

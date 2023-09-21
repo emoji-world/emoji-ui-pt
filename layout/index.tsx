@@ -1,6 +1,6 @@
 import { Button, Layout, Menu, Space } from 'antd';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
-import style from '../styles/layout.module.scss';
+import style from './index.module.scss';
+import Connector from '../components/connector';
 
 const { Header, Content } = Layout;
 
@@ -24,8 +24,8 @@ function NavMenu() {
 export default ((props: any) => {
   const Component = props.Component;
   const pageProps = props.pageProps;
-  return <Layout className="App">
-    <Header className="Header">
+  return <Layout className={style.app}>
+    <Header className={style.header}>
       <Space>
         <h1
           className={style.logo}
@@ -35,9 +35,9 @@ export default ((props: any) => {
         <NavMenu />
       </Space>
       <Button type="primary">你好</Button>
-      <ConnectButton />
+      <Connector />
     </Header>
-    <Content className="Content">
+    <Content className={style.content}>
       <Component {...pageProps} />
     </Content>
   </Layout>;

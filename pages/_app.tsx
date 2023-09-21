@@ -14,7 +14,7 @@ import {
 } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 import { ConfigProvider } from 'antd'; 
-import Layout from './_layout';
+import Layout from '../layout';
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [

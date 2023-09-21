@@ -1,0 +1,40 @@
+.app {
+  font-size: 14px;
+  min-height: 100vh;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3.6rem;
+  z-index: 20;
+  padding: 0 1.5rem;
+  background-color: white;
+  box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.content {
+  margin-top: 3.6rem;
+  > div {
+    padding: 1.2rem 1.5rem 8rem 1.5rem;
+  }
+}
+
+.head {
+  height: 3.6rem;
+  line-height: 3.6rem;
+}
+
+.logo {
+  @extend .head;
+  font-size: 2rem;
+  .haha {
+    font-size: 1.3rem;
+    margin: 0 2px;
+  }
+}
