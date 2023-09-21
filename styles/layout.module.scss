@@ -1,0 +1,35 @@
+.head {
+  height: 3.6rem;
+  line-height: 3.6rem;
+}
+
+.logo {
+  @extend .head;
+  font-size: 2rem;
+  .haha {
+    font-size: 1.3rem;
+    margin: 0 2px;
+  }
+}
+
+.navmenu {
+  @extend .head;
+  ol {
+    @extend .head;
+    display: inline-flex;
+    li {
+      @extend .head;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 0.8rem;
+      font-size: 1.2rem;
+      font-weight: bolder;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.3);
+      }
+    }
+  }
+}
