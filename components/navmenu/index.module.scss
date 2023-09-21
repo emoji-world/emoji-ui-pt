@@ -1,3 +1,8 @@
+.head {
+  height: 3.6rem;
+  line-height: 3.6rem;
+}
+
 .com {
   @extend .head;
   ol {

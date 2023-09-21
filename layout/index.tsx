@@ -1,25 +1,9 @@
 import { Button, Layout, Menu, Space } from 'antd';
 import style from './index.module.scss';
 import Connector from '../components/connector';
+import NavMenu from '../components/navmenu';
 
 const { Header, Content } = Layout;
-
-export
-function NavMenu() {
-  return <nav className={style.navmenu}>
-    <ol>
-      <li>
-        <span>Game</span>
-      </li>
-      <li>
-        <span>Swap</span>
-      </li>
-      <li>
-        <span>Finance</span>
-      </li>
-    </ol>
-  </nav>
-}
 
 export default ((props: any) => {
   const Component = props.Component;
