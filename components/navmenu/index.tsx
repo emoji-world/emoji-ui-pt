@@ -13,6 +13,9 @@ function NavMenu() {
       <li>
         <span>Finance</span>
       </li>
+      <li>
+        <span>News</span>
+      </li>
     </ol>
   </nav>
 }
