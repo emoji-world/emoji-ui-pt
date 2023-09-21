@@ -16,6 +16,7 @@ import { publicProvider } from 'wagmi/providers/public';
 import { ConfigProvider } from 'antd'; 
 import Layout from '../layout';
 import { useEffect } from 'react';
+import { merge } from '../utils/tools';
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
@@ -57,8 +58,11 @@ function MyApp({ Component, pageProps }: AppProps) {
       <WagmiConfig config={wagmiConfig}>
         <RainbowKitProvider
           chains={chains}
-          theme={lightTheme({
-            borderRadius: 'medium',
+          theme={merge(lightTheme({
+            accentColor: '#ffbd2c',
+            borderRadius: 'small',
+          }), {
+
           })}>
           <Layout Component={Component} pageProps={pageProps} />
         </RainbowKitProvider>
