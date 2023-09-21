@@ -8,7 +8,7 @@ export default ((props: any) => {
   const pageProps = props.pageProps;
   return <Layout className="App">
     <Header className="Header">
-      <h1>OWC</h1>
+      <h1>EmojiWorld</h1>
       <ConnectButton />
     </Header>
     <Content className="Content">
