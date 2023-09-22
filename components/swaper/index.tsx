@@ -26,6 +26,9 @@ function Swaper() {
         <Slider defaultValue={30} tooltip={{ placement: 'bottom' }} />
       </div>
     </div>
+    <div className={style.switch}>
+      <span className={style.switch_btn}>👇</span>
+    </div>
     <div className={style.card}>
       <div className={style.input_area}>
         <input type="number" className={style.amount_input} placeholder="0.0" />

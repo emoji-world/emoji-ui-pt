@@ -8,7 +8,7 @@
     background-color: rgba(255, 255, 255, 0.5);
     box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
     min-height: 100px;
-    margin: 2rem;
+    // margin: 2rem;
     padding: 1rem 1rem;
   }
   .input_area {
@@ -49,5 +49,15 @@
   }
   .balance {
     color: #909090;
+  }
+  .switch {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .switch_btn {
+    font-size: 2rem;
+    cursor: pointer;
+    user-select: none;
   }
 }
