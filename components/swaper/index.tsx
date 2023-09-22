@@ -2,6 +2,7 @@ import { Button, Card, Col, Input, InputNumber, Row, Slider } from 'antd';
 import React from 'react';
 import style from './index.module.scss';
 import EButton from '../embutton';
+import Switcher from './switcher';
 
 export
 function Swaper() {
@@ -27,7 +28,7 @@ function Swaper() {
       </div>
     </div>
     <div className={style.switch}>
-      <span className={style.switch_btn}>👇</span>
+      <Switcher />
     </div>
     <div className={style.card}>
       <div className={style.input_area}>
