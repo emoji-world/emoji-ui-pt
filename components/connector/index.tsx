@@ -1,7 +1,7 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Button, Space } from 'antd';
-import style from './index.module.scss';
 import { DownOutlined } from '@ant-design/icons';
+import style from './index.module.scss';
 
 export default () => {
   return (
