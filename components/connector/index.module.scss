@@ -1,3 +1,12 @@
+.com {
+  height: auto;
+  line-height: normal;
+  &.hidden {
+    opacity: 0;
+    pointer-events: none;
+    user-select: none;
+  }
+}
 
 .chain_button {
   display: flex;

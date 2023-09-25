@@ -25,14 +25,9 @@ export default () => {
           (!authenticationStatus ||
             authenticationStatus === 'authenticated');
 
-        return <div {...(!ready && {
-          'aria-hidden': true,
-          'style': {
-            opacity: 0,
-            pointerEvents: 'none',
-            userSelect: 'none',
-          },
-        })}>
+        return <div
+          className={[style.com, !ready ? style.hidden : ''].join(' ')}
+          aria-hidden={!ready}>
           {(() => {
             if (!connected)
               return <Button onClick={openConnectModal} type="primary">Connect Wallet</Button>;
