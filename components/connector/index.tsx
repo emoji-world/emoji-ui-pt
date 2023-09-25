@@ -1,4 +1,7 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { Button, Space } from 'antd';
+import style from './index.module.scss';
+import { DownOutlined } from '@ant-design/icons';
 
 export default () => {
   return (
@@ -22,6 +25,31 @@ export default () => {
           (!authenticationStatus ||
             authenticationStatus === 'authenticated');
 
+        if (!connected)
+          return <Button onClick={openConnectModal} type="primary">Connect Wallet</Button>;
+        if (chain.unsupported)
+          return <Button onClick={openChainModal} type="primary" danger>Unsupported Network</Button>;
+        return <Space>
+          <Button
+            type="default"
+            className={style.chain_button}
+            onClick={openChainModal}>
+            {chain.hasIcon && chain.iconUrl && <img
+              className={style.chain_logo}
+              alt={chain.name ?? 'chain icon'}
+              src={chain.iconUrl}
+            />}
+            {chain.name}
+          </Button>
+          <Button
+            type="primary"
+            className={style.account_button}
+            onClick={openAccountModal}>
+            <span>{account.displayName}</span>
+            <DownOutlined />
+          </Button>
+        </Space>;
+        
         return (
           <div
             {...(!ready && {
@@ -31,64 +59,7 @@ export default () => {
                 pointerEvents: 'none',
                 userSelect: 'none',
               },
-            })}
-          >
-            {(() => {
-              if (!connected) {
-                return (
-                  <button onClick={openConnectModal} type="button">
-                    Connect Wallet
-                  </button>
-                );
-              }
-
-              if (chain.unsupported) {
-                return (
-                  <button onClick={openChainModal} type="button">
-                    Wrong network
-                  </button>
-                );
-              }
-
-              return (
-                <div style={{ display: 'flex', gap: 12 }}>
-                  <button
-                    onClick={openChainModal}
-                    style={{ display: 'flex', alignItems: 'center' }}
-                    type="button"
-                  >
-                    {chain.hasIcon && (
-                      <div
-                        style={{
-                          background: chain.iconBackground,
-                          width: 12,
-                          height: 12,
-                          borderRadius: 999,
-                          overflow: 'hidden',
-                          marginRight: 4,
-                        }}
-                      >
-                        {chain.iconUrl && (
-                          <img
-                            alt={chain.name ?? 'Chain icon'}
-                            src={chain.iconUrl}
-                            style={{ width: 12, height: 12 }}
-                          />
-                        )}
-                      </div>
-                    )}
-                    {chain.name}
-                  </button>
-
-                  <button onClick={openAccountModal} type="button">
-                    {account.displayName}
-                    {account.displayBalance
-                      ? ` (${account.displayBalance})`
-                      : ''}
-                  </button>
-                </div>
-              );
-            })()}
+            })}>
           </div>
         );
       }}
