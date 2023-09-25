@@ -4,8 +4,9 @@ import { RainbowKitProvider, lightTheme, connectorsForWallets } from '@rainbow-m
 import type { AppProps } from 'next/app';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import {
-  arbitrum,
-  arbitrumGoerli,
+  // arbitrum,
+  // arbitrumGoerli,
+  goerli,
 } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 import { ConfigProvider } from 'antd'; 
@@ -28,8 +29,9 @@ import {
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
-    arbitrum,
-    arbitrumGoerli,
+    goerli,
+    // arbitrum,
+    // arbitrumGoerli,
     // ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true' ? [goerli] : []),
   ],
   [publicProvider()]
