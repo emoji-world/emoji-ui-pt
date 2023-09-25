@@ -25,43 +25,41 @@ export default () => {
           (!authenticationStatus ||
             authenticationStatus === 'authenticated');
 
-        if (!connected)
-          return <Button onClick={openConnectModal} type="primary">Connect Wallet</Button>;
-        if (chain.unsupported)
-          return <Button onClick={openChainModal} type="primary" danger>Unsupported Network</Button>;
-        return <Space>
-          <Button
-            type="default"
-            className={style.chain_button}
-            onClick={openChainModal}>
-            {chain.hasIcon && chain.iconUrl && <img
-              className={style.chain_logo}
-              alt={chain.name ?? 'chain icon'}
-              src={chain.iconUrl}
-            />}
-            {chain.name}
-          </Button>
-          <Button
-            type="primary"
-            className={style.account_button}
-            onClick={openAccountModal}>
-            <span>{account.displayName}</span>
-            <DownOutlined />
-          </Button>
-        </Space>;
-        
-        return (
-          <div
-            {...(!ready && {
-              'aria-hidden': true,
-              'style': {
-                opacity: 0,
-                pointerEvents: 'none',
-                userSelect: 'none',
-              },
-            })}>
-          </div>
-        );
+        return <div {...(!ready && {
+          'aria-hidden': true,
+          'style': {
+            opacity: 0,
+            pointerEvents: 'none',
+            userSelect: 'none',
+          },
+        })}>
+          {(() => {
+            if (!connected)
+              return <Button onClick={openConnectModal} type="primary">Connect Wallet</Button>;
+            if (chain.unsupported)
+              return <Button onClick={openChainModal} type="primary" danger>Unsupported Network</Button>;
+            return <Space>
+              <Button
+                type="default"
+                className={style.chain_button}
+                onClick={openChainModal}>
+                {chain.hasIcon && chain.iconUrl && <img
+                  className={style.chain_logo}
+                  alt={chain.name ?? 'chain icon'}
+                  src={chain.iconUrl}
+                />}
+                {chain.name}
+              </Button>
+              <Button
+                type="primary"
+                className={style.account_button}
+                onClick={openAccountModal}>
+                <span>{account.displayName}</span>
+                <DownOutlined />
+              </Button>
+            </Space>;
+          })()}
+        </div>;
       }}
     </ConnectButton.Custom>
   );
