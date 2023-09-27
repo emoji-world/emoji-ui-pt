@@ -2,7 +2,7 @@ import { useContractRead, useContractWrite, useToken } from 'wagmi';
 import abi from '../contracts/JIMAO.json';
 import { useEffect, useState } from 'react';
 import { Button } from 'antd';
-import viem from 'viem';
+import { formatUnits } from 'viem';
 
 (BigInt.prototype as any).toJSON = function () {
   return this.toString();
@@ -29,6 +29,9 @@ export default () => {
     address: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
     abi: abi.abi,
     functionName: 'airdrop',
+    onSuccess: () => {
+      balanceOfResult.refetch();
+    },
   });
 
   if (!isClient) return null;
@@ -39,7 +42,7 @@ export default () => {
       <span onClick={() => {
         console.log(balanceOfResult.data);
       }}>余额:</span>
-      <pre>{JSON.stringify(balanceOfResult.data) as any}</pre>
+      <pre>{formatUnits(balanceOfResult.data as any, jimaoToken.data?.decimals as any)}</pre>
     </div>
     <div>
       <Button loading={airdropResult.isLoading} type="primary" onClick={() => {
