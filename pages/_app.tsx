@@ -4,11 +4,11 @@ import { RainbowKitProvider, lightTheme, connectorsForWallets } from '@rainbow-m
 import type { AppProps } from 'next/app';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import {
-  // arbitrum,
-  // arbitrumGoerli,
+  arbitrum,
+  arbitrumGoerli,
   goerli,
 } from 'wagmi/chains';
-import { localhost } from '../chains/localhost'
+import { localhost } from '../chains/localhost';
 import { publicProvider } from 'wagmi/providers/public';
 import { ConfigProvider } from 'antd'; 
 import Layout from '../layout';
@@ -30,7 +30,6 @@ import {
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
-    goerli,
     localhost,
     // arbitrum,
     // arbitrumGoerli,

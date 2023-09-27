@@ -1,9 +1,9 @@
-import { defineChain } from 'viem/utils/chain';
+import { Chain } from '@rainbow-me/rainbowkit';
 
-export const localhost = /*#__PURE__*/ defineChain({
-  id: 5,
-  network: 'locaohost',
-  name: 'locaohost',
+export const localhost: Chain = {
+  id: 31337,
+  network: 'localhost',
+  name: 'localhost',
   nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
   rpcUrls: {
     default: {
@@ -14,4 +14,4 @@ export const localhost = /*#__PURE__*/ defineChain({
     },
   },
   testnet: true,
-})
+};
