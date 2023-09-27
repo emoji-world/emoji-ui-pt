@@ -8,6 +8,7 @@ import {
   // arbitrumGoerli,
   goerli,
 } from 'wagmi/chains';
+import { localhost } from '../chains/localhost'
 import { publicProvider } from 'wagmi/providers/public';
 import { ConfigProvider } from 'antd'; 
 import Layout from '../layout';
@@ -30,6 +31,7 @@ import {
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
     goerli,
+    localhost,
     // arbitrum,
     // arbitrumGoerli,
     // ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true' ? [goerli] : []),
