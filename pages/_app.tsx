@@ -3,12 +3,7 @@ import '@rainbow-me/rainbowkit/styles.css';
 import { RainbowKitProvider, lightTheme, connectorsForWallets } from '@rainbow-me/rainbowkit';
 import type { AppProps } from 'next/app';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
-import {
-  arbitrum,
-  arbitrumGoerli,
-  goerli,
-} from 'wagmi/chains';
-import { localhost } from '../chains/localhost';
+import { dev } from '../configs/chains';
 import { publicProvider } from 'wagmi/providers/public';
 import { ConfigProvider } from 'antd'; 
 import Layout from '../layout';
@@ -30,9 +25,7 @@ import {
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
-    localhost,
-    // arbitrum,
-    // arbitrumGoerli,
+    dev,
     // ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true' ? [goerli] : []),
   ],
   [publicProvider()]
