@@ -1,4 +1,3 @@
 
-export { hardhat as dev } from 'wagmi/chains';
-
-export { goerli } from 'wagmi/chains';
+export { dev } from './dev';
+export { goerli } from './goerli';
