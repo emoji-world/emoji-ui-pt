@@ -51,7 +51,7 @@ export default () => {
     </div>
     <div>
       <pre>
-        {JSON.stringify(jimaoToken, null, 2)}
+        {JSON.stringify(airdropResult, null, 2)}
       </pre>
     </div>
   </div>;
