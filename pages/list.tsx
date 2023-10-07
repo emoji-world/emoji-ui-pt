@@ -5,6 +5,7 @@ import { abi } from '../contracts/JIMAO.json';
 import { formatEther, parseEther } from 'viem';
 import dayjs from 'dayjs';
 import style from '../styles/list.module.scss';
+import TokenAmount from '../components/TokenAmount';
 
 (BigInt.prototype as any).toJSON = function () {
   return this.toString();
@@ -69,6 +70,7 @@ function List() {
   });
 
   const [time, setTime] = useState<number>(0);
+  const [test, setTest] = useState<number>(0);
 
   if (!isClient) return null;
   return <div className={style.page}>
@@ -173,19 +175,10 @@ function List() {
     </Modal>
     <Modal
       title="WithdrawETH"
+      maskClosable={false}
       open={withdrawModal}
       onCancel={() => setWithdrawModal(null)}>
-      <Slider
-        min={0}
-        max={100}
-        marks={{
-          0: <span>0</span>,
-          25: <span>25</span>,
-          50: <span>50</span>,
-          75: <span>75</span>,
-          100: <span style={{ fontSize: '0.5rem' }}>100</span>,
-        }}
-      />
+      <TokenAmount value={test} balance={200} onChange={(value) => setTest(value)} />
     </Modal>
   </div>;
 }

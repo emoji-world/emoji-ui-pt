@@ -1,0 +1,24 @@
+.com {
+  // display: flex;
+  // justify-content: space-between;
+  // align-items: center;
+  .input {
+
+  }
+  .info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+  }
+  .slider {
+    :global {
+      .ant-slider {
+        // margin: auto;
+      }
+      .ant-slider-mark-text {
+        font-size: 0.8rem;
+      }
+    }
+  }
+}
