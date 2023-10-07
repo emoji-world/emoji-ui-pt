@@ -4,6 +4,7 @@ import { useContractRead, useContractWrite } from 'wagmi';
 import { abi } from '../contracts/JIMAO.json';
 import { formatEther, parseEther } from 'viem';
 import dayjs from 'dayjs';
+import style from '../styles/list.module.scss';
 
 (BigInt.prototype as any).toJSON = function () {
   return this.toString();
@@ -68,16 +69,10 @@ function List() {
   const [time, setTime] = useState<number>(0);
 
   if (!isClient) return null;
-  return <div>
-    {/* <div>
-      <WithdrawTime value={time} onChange={(value) => {
-        console.log(dayjs.unix(value).format('YYYY-MM-DD HH:mm:ss'));
-        setTime(value);
-      }} />
-    </div> */}
-    <div>
+  return <div className={style.page}>
+    <div className={style.top}>
+      <span></span>
       <Space>
-        <InputNumber min={0} onChange={(value) => setDeposit(value ?? 0)} />
         <Button type="primary" onClick={() => {
           addForm.resetFields();
           addForm.setFieldsValue({ withdrawTime: 0 });
@@ -85,39 +80,52 @@ function List() {
         }}>Deposit</Button>
       </Space>
     </div>
-    {/* <div>
-      <pre>{JSON.stringify(myDeposits, null, 2)}</pre>
-    </div> */}
-    <Table
-      bordered
-      size="large"
-      pagination={{
-        current: Number((myDeposits as any).data?.pageNum ?? 0),
-        total: Number((myDeposits as any).data?.total ?? 0),
-        pageSize,
-        onChange: (pageNum, pageSize) => {
-          setPageNum(pageNum);
-          setPageSize(pageSize);
-        },
-      }}
-      columns={[
-        {
-          title: 'Amount',
-          dataIndex: 'amount',
-          render: (amount) => formatEther(amount) + ' ETH',
-        },
-        {
-          title: 'WithdrawTime',
-          dataIndex: 'withdrawTime',
-          width: 180,
-          render: (value) => {
-            if (value <= 0) return <Tag>活期</Tag>;
-            return <Tag>{dayjs.unix(Number(value)).format('YYYY-MM-DD HH:mm:ss')}</Tag>;
+    <div className={style.table}>
+      <Table
+        bordered
+        size="large"
+        pagination={{
+          current: Number((myDeposits as any).data?.pageNum ?? 0),
+          total: Number((myDeposits as any).data?.total ?? 0),
+          pageSize,
+          onChange: (pageNum, pageSize) => {
+            setPageNum(pageNum);
+            setPageSize(pageSize);
           },
-        },
-      ]}
-      dataSource={(myDeposits as any).data?.list ?? []}
-    />
+        }}
+        columns={[
+          {
+            title: 'Amount',
+            dataIndex: 'amount',
+            render: (amount) => formatEther(amount) + ' ETH',
+          },
+          {
+            title: 'WithdrawTime',
+            dataIndex: 'withdrawTime',
+            width: 180,
+            render: (value) => {
+              if (value <= 0) return <Tag>活期</Tag>;
+              return <Tag>{dayjs.unix(Number(value)).format('YYYY-MM-DD HH:mm:ss')}</Tag>;
+            },
+          },
+          {
+            title: 'Actions',
+            width: 110,
+            render: (record) => {
+              return <Space>
+                <Button
+                  type="link"
+                  disabled={!(dayjs().unix() >= Number(record.withdrawTime))}
+                  onClick={() => {
+                    console.log(Number(record.withdrawTime), dayjs().unix());
+                  }}>Withdraw</Button>
+              </Space>;
+            },
+          },
+        ]}
+        dataSource={(myDeposits as any).data?.list ?? []}
+      />
+    </div>
     <Modal
       title="DepositETH"
       open={addModal}

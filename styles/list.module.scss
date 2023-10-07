@@ -1,0 +1,20 @@
+
+.page {
+
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.table {
+  margin-top: 1rem;
+  :global {
+    .ant-btn-link {
+      padding: 0;
+      height: auto;
+      line-height: normal;
+    }
+  }
+}
