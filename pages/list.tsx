@@ -1,4 +1,4 @@
-import { Button, DatePicker, Form, Input, InputNumber, Radio, Modal, Space, Table, Tag, message } from 'antd';
+import { Button, DatePicker, Form, Input, InputNumber, Radio, Modal, Space, Table, Tag, message, Slider } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 import { useContractRead, useContractWrite } from 'wagmi';
 import { abi } from '../contracts/JIMAO.json';
@@ -43,6 +43,8 @@ function List() {
   const [addModal, setAddModal] = useState<boolean>(false);
   const [addForm] = Form.useForm();
   const [addData, setAddData] = useState<any>({ });
+
+  const [withdrawModal, setWithdrawModal] = useState<any>(null);
 
   useEffect(() => setIsClient(true), []);
 
@@ -111,13 +113,14 @@ function List() {
           {
             title: 'Actions',
             width: 110,
-            render: (record) => {
+            render: (record, _, index) => {
               return <Space>
                 <Button
                   type="link"
                   disabled={!(dayjs().unix() >= record.withdrawTime) || record.amount <= 0}
                   onClick={() => {
-                    console.log(Number(record.withdrawTime), dayjs().unix());
+                    console.log(index);
+                    setWithdrawModal(record);
                   }}>Withdraw</Button>
               </Space>;
             },
@@ -167,6 +170,22 @@ function List() {
           />
         </Form.Item>
       </Form>
+    </Modal>
+    <Modal
+      title="WithdrawETH"
+      open={withdrawModal}
+      onCancel={() => setWithdrawModal(null)}>
+      <Slider
+        min={0}
+        max={100}
+        marks={{
+          0: <span>0</span>,
+          25: <span>25</span>,
+          50: <span>50</span>,
+          75: <span>75</span>,
+          100: <span style={{ fontSize: '0.5rem' }}>100</span>,
+        }}
+      />
     </Modal>
   </div>;
 }
