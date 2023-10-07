@@ -178,7 +178,7 @@ function List() {
       maskClosable={false}
       open={withdrawModal}
       onCancel={() => setWithdrawModal(null)}>
-      <TokenAmount value={test} balance={200} onChange={(value) => setTest(value)} />
+      <TokenAmount value={test} balance={200} />
     </Modal>
   </div>;
 }
