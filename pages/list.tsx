@@ -115,7 +115,7 @@ function List() {
               return <Space>
                 <Button
                   type="link"
-                  disabled={!(dayjs().unix() >= Number(record.withdrawTime))}
+                  disabled={!(dayjs().unix() >= record.withdrawTime) || record.amount <= 0}
                   onClick={() => {
                     console.log(Number(record.withdrawTime), dayjs().unix());
                   }}>Withdraw</Button>
