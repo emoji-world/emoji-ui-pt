@@ -1,47 +1,69 @@
 import React, { useMemo, useState } from 'react';
 import style from './index.module.scss';
-import { InputNumber, Slider } from 'antd';
-import Decimal from 'decimal.js';
+import { Button, InputNumber, Slider } from 'antd';
+import { formatUnits, parseUnits } from 'viem';
 
 export
 interface IProps {
-  value?: number;
-  onChange?: (value: number | null) => void;
-  balance: number;
+  value?: bigint;
+  onChange?: (value: bigint) => void;
+  balance: bigint;
   precision?: number;
+  symbol: string;
 }
 
 export default
 function TokenAmount(props: IProps) {
+
+  const valueShow = useMemo(
+    () => formatUnits(props.value ?? 0n, props.precision ?? 0),
+    [props.value, props.precision],
+  );
+
+  const value = useMemo(() => Number(valueShow), [valueShow]);
+
+  const balanceShow = useMemo(
+    () => formatUnits(props.balance ?? 0n, props.precision ?? 0),
+    [props.balance, props.precision],
+  );
+
+  const balance = useMemo(() => Number(balanceShow), [balanceShow]);
+
+  const percent = useMemo(() => value / balance * 100, [value, balance]);
+
   return <div className={style.com}>
     <div className={style.input}>
       <InputNumber
-        value={props.value}
-        onChange={props.onChange}
+        min={0}
+        max={balance}
+        value={value}
+        placeholder="0.0"
+        onChange={(value) => props.onChange?.(parseUnits((value ?? 0).toString(), props.precision ?? 0))}
       />
+      <Button size="large">{props.symbol}</Button>
     </div>
     <div className={style.info}>
       <span></span>
-      <span>Balance {}</span>
+      <span>Balance {balanceShow}</span>
     </div>
     <div className={style.slider}>
       <Slider
-        value={(props.value ?? 0) / props.balance}
+        value={percent}
+        onChange={(value) => props.onChange?.(props.balance * BigInt(value) / 100n)}
         min={0}
-        max={1}
-        step={0.01}
+        max={100}
+        step={1}
         marks={{
           0: <span>0</span>,
-          0.25: <span>25</span>,
-          0.5: <span>50</span>,
-          0.75: <span>75</span>,
-          1: <span>100</span>,
+          25: <span>25</span>,
+          50: <span>50</span>,
+          75: <span>75</span>,
+          100: <span>100</span>,
         }}
         tooltip={{
           placement: 'bottom',
-          formatter: (value: any) => `${props.balance * value} ETH`,
+          formatter: (value) => <span>{`${value}%`}</span>,
         }}
-        onChange={(value) => props.onChange?.(props.balance * value)}
       />
     </div>
   </div>;

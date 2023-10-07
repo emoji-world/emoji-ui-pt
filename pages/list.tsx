@@ -70,7 +70,7 @@ function List() {
   });
 
   const [time, setTime] = useState<number>(0);
-  const [test, setTest] = useState<number>(0);
+  const [bn, setBN] = useState<bigint>(0n);
 
   if (!isClient) return null;
   return <div className={style.page}>
@@ -176,9 +176,15 @@ function List() {
     <Modal
       title="WithdrawETH"
       maskClosable={false}
-      open={withdrawModal}
+      open={true}
       onCancel={() => setWithdrawModal(null)}>
-      <TokenAmount value={test} balance={200} />
+      <TokenAmount
+        symbol="ETH"
+        value={bn}
+        balance={20023n}
+        precision={2}
+        onChange={(value) => setBN(value)}
+      />
     </Modal>
   </div>;
 }

@@ -1,21 +1,35 @@
 .com {
-  // display: flex;
-  // justify-content: space-between;
-  // align-items: center;
   .input {
-
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    :global {
+      .ant-input-number {
+        border: none;
+        font-size: 2.2rem;
+        width: auto;
+        line-height: normal;
+        .ant-input-number-handler-wrap {
+          display: none;
+        }
+        input {
+          padding: 0;
+          line-height: normal;
+          font-weight: bold;
+        }
+      }
+    }
   }
   .info {
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 0.8rem;
+    margin-top: 0.8rem;
+    margin-bottom: -0.3rem;
   }
   .slider {
     :global {
-      .ant-slider {
-        // margin: auto;
-      }
       .ant-slider-mark-text {
         font-size: 0.8rem;
       }
