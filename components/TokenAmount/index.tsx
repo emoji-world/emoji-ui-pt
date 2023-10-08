@@ -53,17 +53,8 @@ function TokenAmount(props: IProps) {
         min={0}
         max={100}
         step={1}
-        marks={{
-          0: <span>0</span>,
-          25: <span>25</span>,
-          50: <span>50</span>,
-          75: <span>75</span>,
-          100: <span>100</span>,
-        }}
-        tooltip={{
-          placement: 'bottom',
-          formatter: (value) => <span>{`${value}%`}</span>,
-        }}
+        marks={Object.fromEntries([0, 25, 50, 75, 100].map((num) => [num, num]))}
+        tooltip={{ placement: 'top', formatter: (value) => `${value}%` }}
       />
     </div>
   </div>;
