@@ -46,6 +46,7 @@ function List() {
   const [addData, setAddData] = useState<any>({ });
 
   const [withdrawModal, setWithdrawModal] = useState<any>(null);
+  const [withdrawAmount, setWithdrawAmount] = useState<bigint>(0n);
 
   useEffect(() => setIsClient(true), []);
 
@@ -63,6 +64,19 @@ function List() {
     onSuccess: () => {
       myDeposits.refetch();
       message.success('deposit success');
+    },
+    onError: (error: any) => {
+      message.error(error.shortMessage ?? error.message);
+    },
+  });
+
+  const changeDepositETH = useContractWrite({
+    abi,
+    address: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+    functionName: 'changeDepositETH',
+    onSuccess: () => {
+      myDeposits.refetch();
+      message.success('change deposit success');
     },
     onError: (error: any) => {
       message.error(error.shortMessage ?? error.message);
@@ -121,8 +135,8 @@ function List() {
                   type="link"
                   disabled={!(dayjs().unix() >= record.withdrawTime) || record.amount <= 0}
                   onClick={() => {
-                    console.log(index);
-                    setWithdrawModal(record);
+                    setWithdrawModal({ ...record, index });
+                    setWithdrawAmount(BigInt(record.amount));
                   }}>Withdraw</Button>
               </Space>;
             },
@@ -176,14 +190,26 @@ function List() {
     <Modal
       title="WithdrawETH"
       maskClosable={false}
-      open={true}
+      open={withdrawModal}
+      okButtonProps={{ loading: changeDepositETH.isLoading }}
+      onOk={async () => {
+        try {
+          console.log(withdrawModal, withdrawAmount);
+          await changeDepositETH.writeAsync({
+            args: [withdrawModal.index, withdrawAmount],
+          });
+          setWithdrawModal(null);
+        } catch (err) {
+          console.error(err);
+        }
+      }}
       onCancel={() => setWithdrawModal(null)}>
       <TokenAmount
         symbol="ETH"
-        value={bn}
-        balance={20023n}
-        precision={2}
-        onChange={(value) => setBN(value)}
+        value={withdrawAmount}
+        balance={BigInt(withdrawModal?.amount ?? 0)}
+        precision={18}
+        onChange={(value) => setWithdrawAmount(value)}
       />
     </Modal>
   </div>;
