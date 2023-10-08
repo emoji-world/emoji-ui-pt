@@ -11,6 +11,8 @@ import TokenAmount from '../components/TokenAmount';
   return this.toString();
 };
 
+const address = '0xa513E6E4b8f2a923D98304ec87F64353C4D5C853';
+
 function WithdrawTime(props: {
   value?: number,
   onChange?: (value: number) => void,
@@ -52,14 +54,14 @@ function List() {
 
   const myDeposits = useContractRead({
     abi,
-    address: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+    address,
     functionName: 'myDeposits',
     args: [pageNum, pageSize],
   });
 
   const depositETH = useContractWrite({
     abi,
-    address: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+    address,
     functionName: 'depositETH',
     onSuccess: () => {
       myDeposits.refetch();
@@ -72,7 +74,7 @@ function List() {
 
   const changeDepositETH = useContractWrite({
     abi,
-    address: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+    address,
     functionName: 'changeDepositETH',
     onSuccess: () => {
       myDeposits.refetch();
@@ -82,9 +84,6 @@ function List() {
       message.error(error.shortMessage ?? error.message);
     },
   });
-
-  const [time, setTime] = useState<number>(0);
-  const [bn, setBN] = useState<bigint>(0n);
 
   if (!isClient) return null;
   return <div className={style.page}>
