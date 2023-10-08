@@ -1,6 +1,6 @@
 import { Button, DatePicker, Form, Input, InputNumber, Radio, Modal, Space, Table, Tag, message, Slider } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
-import { useContractRead, useContractWrite } from 'wagmi';
+import { useAccount, useBalance, useContractRead, useContractWrite } from 'wagmi';
 import { abi } from '../contracts/JIMAO.json';
 import { formatEther, parseEther } from 'viem';
 import dayjs from 'dayjs';
@@ -11,7 +11,7 @@ import TokenAmount from '../components/TokenAmount';
   return this.toString();
 };
 
-const address = '0xa513E6E4b8f2a923D98304ec87F64353C4D5C853';
+const address = '0xA6774A60CdF7Cf57C4B8d8e54763077aC1418BaC';
 
 function WithdrawTime(props: {
   value?: number,
@@ -50,13 +50,25 @@ function List() {
   const [withdrawModal, setWithdrawModal] = useState<any>(null);
   const [withdrawAmount, setWithdrawAmount] = useState<bigint>(0n);
 
+  const [appendModal, setAppendModal] = useState<any>(null);
+  const [appendAmount, setAppendAmount] = useState<bigint>(0n);
+
   useEffect(() => setIsClient(true), []);
+
+  const account = useAccount();
+  const balance = useBalance({ address: account.address });
 
   const myDeposits = useContractRead({
     abi,
     address,
     functionName: 'myDeposits',
-    args: [pageNum, pageSize],
+    args: [account.address, pageNum, pageSize],
+  });
+
+  const myAddress = useContractRead({
+    abi,
+    address,
+    functionName: 'myAddress',
   });
 
   const depositETH = useContractWrite({
@@ -69,6 +81,9 @@ function List() {
     },
     onError: (error: any) => {
       message.error(error.shortMessage ?? error.message);
+    },
+    onSettled: () => {
+      balance.refetch();
     },
   });
 
@@ -83,10 +98,19 @@ function List() {
     onError: (error: any) => {
       message.error(error.shortMessage ?? error.message);
     },
+    onSettled: () => {
+      balance.refetch();
+    },
   });
 
   if (!isClient) return null;
   return <div className={style.page}>
+    {/* <div>
+      <pre>{JSON.stringify(myAddress, null, 2)}</pre>
+    </div> */}
+    <div>
+      {balance.data?.formatted}
+    </div>
     <div className={style.top}>
       <span></span>
       <Space>
@@ -127,7 +151,7 @@ function List() {
           },
           {
             title: 'Actions',
-            width: 110,
+            width: 200,
             render: (record, _, index) => {
               return <Space>
                 <Button
@@ -136,7 +160,16 @@ function List() {
                   onClick={() => {
                     setWithdrawModal({ ...record, index });
                     setWithdrawAmount(BigInt(record.amount));
-                  }}>Withdraw</Button>
+                  }}>
+                  Withdraw
+                </Button>
+                <Button
+                  type="link"
+                  onClick={() => {
+                    setAppendModal({ ...record, index });
+                  }}>
+                  Append
+                </Button>
               </Space>;
             },
           },
@@ -207,6 +240,19 @@ function List() {
         symbol="ETH"
         value={withdrawAmount}
         balance={BigInt(withdrawModal?.amount ?? 0)}
+        precision={18}
+        onChange={(value) => setWithdrawAmount(value)}
+      />
+    </Modal>
+    <Modal
+      title="AppendETH"
+      maskClosable={false}
+      open={appendModal}
+      onCancel={() => setAppendModal(null)}>
+      <TokenAmount
+        symbol="ETH"
+        value={withdrawAmount}
+        balance={balance.data?.value ?? 0n}
         precision={18}
         onChange={(value) => setWithdrawAmount(value)}
       />
