@@ -34,11 +34,11 @@ function TokenAmount(props: IProps) {
   return <div className={style.com}>
     <div className={style.input}>
       <InputNumber
+        value={value}
+        onChange={(value) => props.onChange?.(parseUnits((value ?? 0).toString(), props.precision ?? 0))}
         min={0}
         max={balance}
-        value={value}
         placeholder="0.0"
-        onChange={(value) => props.onChange?.(parseUnits((value ?? 0).toString(), props.precision ?? 0))}
       />
       <Button size="large">{props.symbol}</Button>
     </div>
