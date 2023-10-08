@@ -14,7 +14,6 @@ interface IProps {
 
 export default
 function TokenAmount(props: IProps) {
-
   const valueShow = useMemo(
     () => formatUnits(props.value ?? 0n, props.precision ?? 0),
     [props.value, props.precision],
