@@ -172,7 +172,7 @@ function List() {
                 <Button
                   type="link"
                   onClick={() => {
-                    setAppendModal({ ...record, index });
+                    setAppendModal({ ...record, index: (pageNum - 1) * pageSize + index });
                   }}>
                   Append
                 </Button>
@@ -259,13 +259,16 @@ function List() {
       title="AppendETH"
       maskClosable={false}
       open={appendModal}
+      onOk={() => {
+        console.log(appendModal, appendAmount);
+      }}
       onCancel={() => setAppendModal(null)}>
       <TokenAmount
         symbol="ETH"
-        value={withdrawAmount}
+        value={appendAmount}
         balance={balance.data?.value ?? 0n}
         precision={18}
-        onChange={(value) => setWithdrawAmount(value)}
+        onChange={(value) => setAppendAmount(value)}
       />
     </Modal>
   </div>;
