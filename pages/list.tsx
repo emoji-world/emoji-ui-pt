@@ -109,6 +109,15 @@ function List() {
     },
   });
 
+  const appendETH = useContractWrite({
+    abi,
+    address,
+    functionName: 'changeDepositETH',
+    onError: (error: any) => {
+      message.error(error.shortMessage ?? error.message);
+    },
+  });
+
   if (!isClient) return null;
   return <div className={style.page}>
     {/* <div>
@@ -259,8 +268,17 @@ function List() {
       title="AppendETH"
       maskClosable={false}
       open={appendModal}
-      onOk={() => {
+      onOk={async () => {
         console.log(appendModal, appendAmount);
+        try {
+          await appendETH.writeAsync({
+            args: [appendModal.index, 0],
+            value: appendAmount,
+          });
+          setAppendModal(null);
+        } catch (err) {
+          console.error(err);
+        }
       }}
       onCancel={() => setAppendModal(null)}>
       <TokenAmount
