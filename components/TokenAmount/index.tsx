@@ -35,7 +35,10 @@ function TokenAmount(props: IProps) {
   const balance = useMemo(() => Number(balanceFormat), [balanceFormat]);
   const balanceShow = useMemo(() => truncatePrecision(balanceFormat, props.precisionShow), [balanceFormat, props.precisionShow]);
 
-  const percent = useMemo(() => balance && (value / balance * 100), [value, balance]);
+  const percent = useMemo(
+    () => Number(props.balance && (props.value ?? 0n) * 100n / props.balance),
+    [props.value, props.balance],
+  );
 
   return <div className={style.com}>
     <div className={style.input}>
