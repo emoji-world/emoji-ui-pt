@@ -1,6 +1,6 @@
 import { Button, DatePicker, Form, Input, InputNumber, Radio, Modal, Space, Table, Tag, message, Slider } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
-import { useAccount, useBalance, useContractRead, useContractWrite } from 'wagmi';
+import { useAccount, useBalance, useContractRead, useContractWrite, useWaitForTransaction } from 'wagmi';
 import { abi } from '../contracts/JIMAO.json';
 import { formatEther, parseEther } from 'viem';
 import dayjs from 'dayjs';
@@ -11,7 +11,7 @@ import TokenAmount from '../components/TokenAmount';
   return this.toString();
 };
 
-const address = '0xA6774A60CdF7Cf57C4B8d8e54763077aC1418BaC';
+const address = '0x527C0b26D899A3Bc7d232ADFb4B771cD3F1c4910';
 
 function WithdrawTime(props: {
   value?: number,
@@ -71,19 +71,25 @@ function List() {
     functionName: 'myAddress',
   });
 
+  const [depositETHHash, setDepositETHHash] = useState<any>(null);
   const depositETH = useContractWrite({
     abi,
     address,
     functionName: 'depositETH',
-    onSuccess: () => {
-      myDeposits.refetch();
-      message.success('deposit success');
-    },
     onError: (error: any) => {
       message.error(error.shortMessage ?? error.message);
     },
-    onSettled: () => {
-      balance.refetch();
+  });
+
+  const wait = useWaitForTransaction({
+    hash: depositETHHash,
+    onReplaced: (data) => {
+      message.info('onReplaced');
+    },
+    onSettled: (data) => {
+      console.log(1111, data?.transactionHash);
+      myDeposits.refetch();
+      message.success('deposit success');
     },
   });
 
@@ -158,7 +164,7 @@ function List() {
                   type="link"
                   disabled={!(dayjs().unix() >= record.withdrawTime) || record.amount <= 0}
                   onClick={() => {
-                    setWithdrawModal({ ...record, index });
+                    setWithdrawModal({ ...record, index: (pageNum - 1) * pageSize + index });
                     setWithdrawAmount(BigInt(record.amount));
                   }}>
                   Withdraw
@@ -176,6 +182,9 @@ function List() {
         ]}
         dataSource={(myDeposits as any).data?.list ?? []}
       />
+      <div onClick={() => {
+        console.log(myDeposits.data);
+      }}>123</div>
     </div>
     <Modal
       title="DepositETH"
@@ -184,10 +193,12 @@ function List() {
       onOk={async () => {
         try {
           const data = await addForm.validateFields();
-          await depositETH.writeAsync({
+          const tx = await depositETH.writeAsync({
             args: [data.withdrawTime],
             value: parseEther(data.amount.toString()),
           });
+          setDepositETHHash(tx.hash);
+          console.log(1112, tx.hash);
           setAddModal(false);
         } catch (error) {
           console.error(error);
