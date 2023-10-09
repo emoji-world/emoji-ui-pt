@@ -33,7 +33,7 @@ function TokenAmount(props: IProps) {
     [props.balance, props.precision],
   );
   const balance = useMemo(() => Number(balanceFormat), [balanceFormat]);
-  const balanceShow = useMemo(() => truncatePrecision(balanceFormat, props.precisionShow), [balanceFormat, props.displayPrecision]);
+  const balanceShow = useMemo(() => truncatePrecision(balanceFormat, props.precisionShow), [balanceFormat, props.precisionShow]);
 
   const percent = useMemo(() => balance && (value / balance * 100), [value, balance]);
 
