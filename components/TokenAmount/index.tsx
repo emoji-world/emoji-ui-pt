@@ -3,30 +3,37 @@ import style from './index.module.scss';
 import { Button, InputNumber, Slider } from 'antd';
 import { formatUnits, parseUnits } from 'viem';
 
+function truncatePrecision(num: number | string, precision: number) {
+  const numSegs = num.toString().split('.');
+  numSegs[1] = numSegs[1]?.slice(0, precision) ?? '';
+  return numSegs.join('.');
+}
+
 export
 interface IProps {
+  symbol: string;
+  balance: bigint;
+  precision: number;
+  precisionShow: number;
   value?: bigint;
   onChange?: (value: bigint) => void;
-  balance: bigint;
-  precision?: number;
-  symbol: string;
 }
 
 export default
 function TokenAmount(props: IProps) {
   const valueShow = useMemo(
-    () => formatUnits(props.value ?? 0n, props.precision ?? 0),
+    () => formatUnits(props.value ?? 0n, props.precision),
     [props.value, props.precision],
   );
 
   const value = useMemo(() => Number(valueShow), [valueShow]);
 
-  const balanceShow = useMemo(
-    () => formatUnits(props.balance ?? 0n, props.precision ?? 0),
+  const balanceFormat = useMemo(
+    () => formatUnits(props.balance ?? 0n, props.precision),
     [props.balance, props.precision],
   );
-
-  const balance = useMemo(() => Number(balanceShow), [balanceShow]);
+  const balance = useMemo(() => Number(balanceFormat), [balanceFormat]);
+  const balanceShow = useMemo(() => truncatePrecision(balanceFormat, props.precisionShow), [balanceFormat, props.displayPrecision]);
 
   const percent = useMemo(() => balance && (value / balance * 100), [value, balance]);
 
@@ -34,7 +41,7 @@ function TokenAmount(props: IProps) {
     <div className={style.input}>
       <InputNumber
         value={value}
-        onChange={(value) => props.onChange?.(parseUnits((value ?? 0).toString(), props.precision ?? 0))}
+        onChange={(value) => props.onChange?.(parseUnits((value ?? 0).toString(), props.precision))}
         min={0}
         max={balance}
         placeholder="0.0"

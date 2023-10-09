@@ -261,6 +261,7 @@ function List() {
         value={withdrawAmount}
         balance={BigInt(withdrawModal?.amount ?? 0)}
         precision={18}
+        precisionShow={4}
         onChange={(value) => setWithdrawAmount(value)}
       />
     </Modal>
@@ -286,6 +287,7 @@ function List() {
         value={appendAmount}
         balance={balance.data?.value ?? 0n}
         precision={18}
+        precisionShow={4}
         onChange={(value) => setAppendAmount(value)}
       />
     </Modal>
