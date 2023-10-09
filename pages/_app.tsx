@@ -77,6 +77,14 @@ function MyApp({ Component, pageProps }: AppProps) {
       token: {
         colorPrimary: '#ffbd2c',
       },
+      components: {
+        Slider: {
+          railSize: 5,
+          dotSize: 12,
+          handleSize: 12,
+          handleSizeHover: 14,
+        },
+      },
     }}>
       <WagmiConfig config={wagmiConfig}>
         <RainbowKitProvider
