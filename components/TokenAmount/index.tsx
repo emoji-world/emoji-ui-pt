@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import style from './index.module.scss';
-import { Button, InputNumber, Slider } from 'antd';
+import { Button, InputNumber, Slider, Space } from 'antd';
 import { formatUnits, parseUnits } from 'viem';
 
 function truncatePrecision(num: number | string, precision: number) {
@@ -35,10 +35,7 @@ function TokenAmount(props: IProps) {
   const balance = useMemo(() => Number(balanceFormat), [balanceFormat]);
   const balanceShow = useMemo(() => truncatePrecision(balanceFormat, props.precisionShow), [balanceFormat, props.precisionShow]);
 
-  const percent = useMemo(
-    () => Number(props.balance && (props.value ?? 0n) * 100n / props.balance),
-    [props.value, props.balance],
-  );
+  const percent = useMemo(() => Math.round(balance && (value / balance * 100)), [value, balance]);
 
   return <div className={style.com}>
     <div className={style.input}>
@@ -59,14 +56,26 @@ function TokenAmount(props: IProps) {
       <span></span>
       <span>Balance {balanceShow}</span>
     </div>
+    <div>
+      <Space>
+        <span>{balanceFormat}</span>
+        <span>{balance}</span>
+        <span>{parseUnits(balanceFormat, 18).toString()}</span>
+      </Space>
+      {/* <Space>
+        <span>{value}</span>
+        <span>{balance}</span>
+        <span>{percent}</span>
+      </Space> */}
+    </div>
     <div className={style.slider}>
       <Slider
-        // value={percent}
+        value={percent}
         onChange={(value) => {
           console.log(value);
-          // console.log(props.balance);
-          // console.log(props.balance * BigInt(value) / 100n);
-          // props.onChange?.(props.balance * BigInt(value) / 100n);
+          console.log(props.balance);
+          console.log(props.balance * BigInt(value) / 100n);
+          props.onChange?.(props.balance * BigInt(value) / 100n);
         }}
         min={0}
         max={100}
