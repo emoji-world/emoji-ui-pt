@@ -6,7 +6,7 @@ import { formatUnits, parseUnits } from 'viem';
 function truncatePrecision(num: number | string, precision: number) {
   const numSegs = num.toString().split('.');
   numSegs[1] = numSegs[1]?.slice(0, precision) ?? '';
-  return numSegs.join('.');
+  return numSegs.filter((seg) => seg).join('.');
 }
 
 export
@@ -44,6 +44,10 @@ function TokenAmount(props: IProps) {
     <div className={style.input}>
       <InputNumber
         value={value}
+        formatter={(value) => {
+          console.log(value);
+          return truncatePrecision(value ?? 0, props.precisionShow);
+        }}
         onChange={(value) => props.onChange?.(parseUnits((value ?? 0).toString(), props.precision))}
         min={0}
         max={balance}
@@ -57,8 +61,13 @@ function TokenAmount(props: IProps) {
     </div>
     <div className={style.slider}>
       <Slider
-        value={percent}
-        onChange={(value) => props.onChange?.(props.balance * BigInt(value) / 100n)}
+        // value={percent}
+        onChange={(value) => {
+          console.log(value);
+          // console.log(props.balance);
+          // console.log(props.balance * BigInt(value) / 100n);
+          // props.onChange?.(props.balance * BigInt(value) / 100n);
+        }}
         min={0}
         max={100}
         step={1}
