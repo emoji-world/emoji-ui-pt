@@ -21,12 +21,12 @@ interface IProps {
 
 export default
 function TokenAmount(props: IProps) {
-  const valueShow = useMemo(
+  const valueFormat = useMemo(
     () => formatUnits(props.value ?? 0n, props.precision),
     [props.value, props.precision],
   );
-
-  const value = useMemo(() => Number(valueShow), [valueShow]);
+  const value = useMemo(() => Number(valueFormat), [valueFormat]);
+  const valueShow = useMemo(() => truncatePrecision(valueFormat, props.precisionShow), [valueFormat, props.precisionShow]);
 
   const balanceFormat = useMemo(
     () => formatUnits(props.balance ?? 0n, props.precision),
@@ -41,10 +41,7 @@ function TokenAmount(props: IProps) {
     <div className={style.input}>
       <InputNumber
         value={value}
-        formatter={(value) => {
-          console.log(value);
-          return truncatePrecision(value ?? 0, props.precisionShow);
-        }}
+        formatter={() => valueShow}
         onChange={(value) => props.onChange?.(parseUnits((value ?? 0).toString(), props.precision))}
         min={0}
         max={balance}
