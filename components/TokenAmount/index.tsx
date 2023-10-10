@@ -5,7 +5,7 @@ import { formatUnits, parseUnits } from 'viem';
 
 function truncatePrecision(num: number | string, precision: number) {
   const numSegs = num.toString().split('.');
-  numSegs[1] = numSegs[1]?.slice(0, precision) ?? '';
+  numSegs[1] = numSegs[1]?.slice(0, precision);
   return numSegs.filter((seg) => seg).join('.');
 }
 
