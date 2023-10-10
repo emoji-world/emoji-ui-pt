@@ -56,18 +56,6 @@ function TokenAmount(props: IProps) {
       <span></span>
       <span>Balance {balanceShow}</span>
     </div>
-    <div>
-      <Space>
-        <span>{balanceFormat}</span>
-        <span>{balance}</span>
-        <span>{parseUnits(balanceFormat, 18).toString()}</span>
-      </Space>
-      {/* <Space>
-        <span>{value}</span>
-        <span>{balance}</span>
-        <span>{percent}</span>
-      </Space> */}
-    </div>
     <div className={style.slider}>
       <Slider
         value={percent}
