@@ -22,7 +22,7 @@ function ExpireTimePicker(props: {
     <Radio.Group
       value={isTime}
       onChange={(event) => props.onChange?.(event.target.value ? dayjs().add(1, 'years').unix() : 0)}>
-      <Radio value={true}>Time{duration ? ` [${duration}]` : ''}</Radio>
+      <Radio value={true}>Time<span style={{ fontWeight: 'bold' }}>{duration ? ` [${duration}]` : ''}</span></Radio>
       <Radio value={false}>Demand</Radio>
     </Radio.Group>
     {isTime && <DatePicker
