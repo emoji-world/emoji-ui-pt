@@ -1,6 +1,6 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import style from './index.module.scss';
-import { Button, InputNumber, Slider, Space } from 'antd';
+import { Button, InputNumber, Slider } from 'antd';
 import { formatUnits, parseUnits } from 'viem';
 
 function truncatePrecision(num: number | string, precision: number) {
@@ -27,8 +27,7 @@ function TokenAmount(props: IProps) {
   );
   const value = useMemo(() => Number(valueFormat), [valueFormat]);
   const valueShow = useCallback(
-    (value: any) =>
-      truncatePrecision(value ?? 0, props.precisionShow),
+    (value: any) => truncatePrecision(value ?? 0, props.precisionShow),
     [props.precisionShow],
   );
 
@@ -37,7 +36,10 @@ function TokenAmount(props: IProps) {
     [props.balance, props.precision],
   );
   const balance = useMemo(() => Number(balanceFormat), [balanceFormat]);
-  const balanceShow = useMemo(() => truncatePrecision(balanceFormat, props.precisionShow), [balanceFormat, props.precisionShow]);
+  const balanceShow = useMemo(
+    () => truncatePrecision(balanceFormat, props.precisionShow),
+    [balanceFormat, props.precisionShow],
+  );
 
   const percent = useMemo(() => Math.round(balance && (value / balance * 100)), [value, balance]);
 
