@@ -18,7 +18,7 @@ function Deposits() {
   const [isClient, setIsClient] = useState(false);
   const account = useAccount();
   const [pageNum, setPageNum] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(10);
+  const [pageSize, setPageSize] = useState<number>(5);
 
   const myDeposits = useContractRead({
     abi,
@@ -76,6 +76,8 @@ function Deposits() {
           total: Number(myDepositsData.total),
           current: Number(myDepositsData.pageNum),
           pageSize: Number(myDepositsData.pageSize),
+          showSizeChanger: true,
+          pageSizeOptions: [5, 10, 20, 50],
           onChange: (pageNum, pageSize) => {
             setPageNum(pageNum);
             setPageSize(pageSize);
