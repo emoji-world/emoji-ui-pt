@@ -1,0 +1,38 @@
+.com {
+  .input {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    :global {
+      .ant-input-number {
+        border: none;
+        font-size: 2.8rem;
+        width: auto;
+        line-height: normal;
+        .ant-input-number-handler-wrap {
+          display: none;
+        }
+        input {
+          padding: 0;
+          line-height: normal;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+  .info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    margin-top: 0.2rem;
+    margin-bottom: -0.4rem;
+  }
+  .slider {
+    :global {
+      .ant-slider-mark-text {
+        font-size: 0.8rem;
+      }
+    }
+  }
+}
