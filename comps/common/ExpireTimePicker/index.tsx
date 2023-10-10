@@ -9,12 +9,20 @@ function ExpireTimePicker(props: {
 }) {
   const isTime = useMemo(() => props.value as number > 0, [props.value]);
   const time = useMemo(() => dayjs.unix(props.value ?? 0), [props.value]);
+  const duration = useMemo(() => {
+    const diff = (props.value ?? 0) - dayjs().unix();
+    if (diff < 0) return '';
+    if (diff < 60 * 60) return 'in one hour';
+    const hours = Number((diff / 60 / 60).toFixed(1));
+    if (hours < 24) return `${hours} hours`;
+    return `${Number((hours / 24).toFixed(1))} days`;
+  }, [props.value]);
 
   return <Space>
     <Radio.Group
       value={isTime}
       onChange={(event) => props.onChange?.(event.target.value ? dayjs().add(1, 'years').unix() : 0)}>
-      <Radio value={true}>Time</Radio>
+      <Radio value={true}>Time {`[${duration}]`}</Radio>
       <Radio value={false}>Demand</Radio>
     </Radio.Group>
     {isTime && <DatePicker
