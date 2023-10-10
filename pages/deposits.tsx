@@ -53,7 +53,7 @@ function Deposits() {
           {
             title: 'Amount',
             dataIndex: 'amount',
-            render: (value: bigint) => `${formatEther(value)} ETH`,
+            render: (value: bigint) => <span style={{ fontWeight: 'bold' }}>{`${formatEther(value)} ETH`}</span>,
           },
           {
             title: 'WithdrawTime',
