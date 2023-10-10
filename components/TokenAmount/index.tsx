@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import style from './index.module.scss';
 import { Button, InputNumber, Slider, Space } from 'antd';
 import { formatUnits, parseUnits } from 'viem';
@@ -26,7 +26,11 @@ function TokenAmount(props: IProps) {
     [props.value, props.precision],
   );
   const value = useMemo(() => Number(valueFormat), [valueFormat]);
-  const valueShow = useMemo(() => truncatePrecision(valueFormat, props.precisionShow), [valueFormat, props.precisionShow]);
+  const valueShow = useCallback(
+    (value: any) =>
+      truncatePrecision(value ?? 0, props.precisionShow),
+    [props.precisionShow],
+  );
 
   const balanceFormat = useMemo(
     () => formatUnits(props.balance ?? 0n, props.precision),
@@ -41,8 +45,8 @@ function TokenAmount(props: IProps) {
     <div className={style.input}>
       <InputNumber
         value={value}
-        formatter={() => valueShow}
-        onChange={(value) => props.onChange?.(parseUnits((value ?? 0).toString(), props.precision))}
+        formatter={valueShow}
+        onChange={(value) => props.onChange?.(parseUnits(valueShow(value), props.precision))}
         min={0}
         max={balance}
         placeholder="0.0"
