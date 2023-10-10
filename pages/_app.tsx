@@ -76,6 +76,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ConfigProvider theme={{
       token: {
         colorPrimary: '#ffbd2c',
+        borderRadius: 0,
       },
       components: {
         Slider: {
