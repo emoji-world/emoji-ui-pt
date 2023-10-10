@@ -37,6 +37,7 @@ function ExpireTimePicker(props: {
       ]}
       placeholder="Please select WithdrawTime"
       style={{ width: '200px' }}
+      disabledDate={(date) => date.isBefore(dayjs())}
     />}
   </Space>;
 }
