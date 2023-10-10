@@ -5,6 +5,7 @@ import { useAccount, useContractRead } from 'wagmi';
 import { useEffect, useMemo, useState } from 'react';
 import { abi } from '../contracts/JIMAO.json';
 import { formatEther } from 'viem';
+import dayjs from 'dayjs';
 
 (BigInt.prototype as any).toJSON = function () {
   return this.toString();
@@ -57,7 +58,8 @@ function Deposits() {
           {
             title: 'WithdrawTime',
             dataIndex: 'withdrawTime',
-            width: 200,
+            width: 180,
+            render: (value: bigint) => dayjs(Number(value)).format('YYYY-MM-DD HH:mm:ss'),
           },
           {
             title: 'Actions',
