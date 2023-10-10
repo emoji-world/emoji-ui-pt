@@ -20,8 +20,14 @@ function ExpireTimePicker(props: {
       value={time}
       onChange={(value) => props.onChange?.(value?.unix() ?? 0)}
       showTime
+      presets={[
+        { label: 'One Day', value: dayjs().add(1, 'days'), },
+        { label: 'One Week', value: dayjs().add(1, 'weeks'), },
+        { label: 'One Month', value: dayjs().add(1, 'months'), },
+        { label: 'One Year', value: dayjs().add(1, 'years'), },
+      ]}
       placeholder="Please select WithdrawTime"
-      style={{ width: '240px' }}
+      style={{ width: '200px' }}
     />}
   </Space>;
 }
