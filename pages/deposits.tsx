@@ -1,11 +1,12 @@
 
-import { Button, Space, Table } from 'antd';
+import { Button, DatePicker, Radio, Space, Table } from 'antd';
 import style from '../styles/deposits.module.scss';
 import { useAccount, useContractRead } from 'wagmi';
 import { useEffect, useMemo, useState } from 'react';
 import { abi } from '../contracts/JIMAO.json';
 import { formatEther } from 'viem';
 import dayjs from 'dayjs';
+import DepositModal from '../comps/page/deposits/depositModal';
 
 (BigInt.prototype as any).toJSON = function () {
   return this.toString();
@@ -13,12 +14,15 @@ import dayjs from 'dayjs';
 
 const address = '0x527C0b26D899A3Bc7d232ADFb4B771cD3F1c4910';
 
+
 export default
 function Deposits() {
   const [isClient, setIsClient] = useState(false);
   const account = useAccount();
   const [pageNum, setPageNum] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(5);
+
+  const [depositModal, setDepositModal] = useState<boolean>(false);
 
   const myDeposits = useContractRead({
     abi,
@@ -42,7 +46,9 @@ function Deposits() {
     </div> */}
     <div className={style.header}>
       <span></span>
-      <Button type="primary">Deposit</Button>
+      <Button type="primary" onClick={() => {
+        setDepositModal(true);
+      }}>Deposit</Button>
     </div>
     <div className={style.content}>
       <Table
@@ -85,5 +91,9 @@ function Deposits() {
         }}
       />
     </div>
+    <DepositModal
+      open={depositModal}
+      onCancel={() => setDepositModal(false)}
+    />
   </div>;
 }
