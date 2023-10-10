@@ -59,12 +59,7 @@ function TokenAmount(props: IProps) {
     <div className={style.slider}>
       <Slider
         value={percent}
-        onChange={(value) => {
-          console.log(value);
-          console.log(props.balance);
-          console.log(props.balance * BigInt(value) / 100n);
-          props.onChange?.(props.balance * BigInt(value) / 100n);
-        }}
+        onChange={(value) => props.onChange?.(props.balance * BigInt(value) / 100n)}
         min={0}
         max={100}
         step={1}
