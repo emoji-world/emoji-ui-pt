@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { ReactNode, useCallback, useMemo } from 'react';
 import style from './index.module.scss';
 import { Button, InputNumber, Slider } from 'antd';
 import { formatUnits, parseUnits } from 'viem';
@@ -15,6 +15,7 @@ interface IProps {
   balance: bigint;
   precision: number;
   precisionShow: number;
+  children?: ReactNode,
   value?: bigint;
   onChange?: (value: bigint) => void;
 }
@@ -55,11 +56,11 @@ function TokenAmount(props: IProps) {
         max={balance}
         placeholder="0.0"
       />
-      <Button
+      {props.children ?? <Button
         size="large"
         onClick={() => props.onChange?.(isAll ? props.balance * 50n / 100n : props.balance)}>
         {isAll ? 'HALF' : 'ALL'} {props.symbol}
-      </Button>
+      </Button>}
     </div>
     <div className={style.info}>
       <span></span>
