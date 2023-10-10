@@ -43,6 +43,8 @@ function TokenAmount(props: IProps) {
 
   const percent = useMemo(() => Math.round(balance && (value / balance * 100)), [value, balance]);
 
+  const isAll = useMemo(() => props.value === props.balance, [props.value, props.balance]);
+
   return <div className={style.com}>
     <div className={style.input}>
       <InputNumber
@@ -53,7 +55,11 @@ function TokenAmount(props: IProps) {
         max={balance}
         placeholder="0.0"
       />
-      <Button size="large">{props.symbol}</Button>
+      <Button
+        size="large"
+        onClick={() => props.onChange?.(isAll ? props.balance * 50n / 100n : props.balance)}>
+        {isAll ? 'HALF' : 'ALL'} {props.symbol}
+      </Button>
     </div>
     <div className={style.info}>
       <span></span>
