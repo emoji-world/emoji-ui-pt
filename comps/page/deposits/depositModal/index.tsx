@@ -1,8 +1,11 @@
-import { Form, Modal, ModalProps } from 'antd';
+import { Form, Modal, ModalProps, message } from 'antd';
 import TokenAmount from '../../../common/TokenAmount';
 import { useEffect, useState } from 'react';
 import ExpireTimePicker from '../../../common/ExpireTimePicker';
-import { useAccount, useBalance } from 'wagmi';
+import { useAccount, useBalance, useContractWrite } from 'wagmi';
+import { abi } from '../../../../contracts/JIMAO.json';
+
+const address = '0x527C0b26D899A3Bc7d232ADFb4B771cD3F1c4910';
 
 export default
 function DepositModal(props: ModalProps) {
@@ -24,15 +27,38 @@ function DepositModal(props: ModalProps) {
     else setOpen(false);
   }, [props.open]);
 
+  const depositETH = useContractWrite({
+    abi,
+    address,
+    functionName: 'depositETH',
+    onError: (error: any) => {
+      message.error(error.shortMessage ?? error.message);
+    },
+  });
+
+  const handleDepositETH = async (event: any) => {
+    try {
+      const data = await form.validateFields();
+      const tx = await depositETH.writeAsync({
+        args: [data.withdrawTime],
+        value: data.amount,
+      });
+      message.success('Deposit has submitted');
+      props.onCancel?.(event);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return <Modal
     { ...props }
     open={open}
     title="DepositModal"
     maskClosable={false}
-    onOk={async (event) => {
-      const data = await form.validateFields();
-      console.log(data);
-    }}>
+    okButtonProps={{
+      loading: depositETH.isLoading,
+    }}
+    onOk={handleDepositETH}>
     <Form
       form={form}
       layout="vertical">
