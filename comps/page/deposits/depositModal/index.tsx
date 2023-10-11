@@ -1,28 +1,34 @@
-import { DatePicker, Form, Modal, ModalProps, Radio, Space } from 'antd';
-import style from './index.module.scss';
+import { Form, Modal, ModalProps } from 'antd';
 import TokenAmount from '../../../common/TokenAmount';
-import { useMemo } from 'react';
-import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
 import ExpireTimePicker from '../../../common/ExpireTimePicker';
 import { useAccount, useBalance } from 'wagmi';
 
 export default
 function DepositModal(props: ModalProps) {
+  const [open, setOpen] = useState<boolean>(false);
   const [form] = Form.useForm();
   const account = useAccount();
   const balance = useBalance({ address: account.address });
 
+  const openModal = async () => {
+    const latestBalance = await balance.refetch();
+    form.resetFields();
+    form.setFieldValue('withdrawTime', 0);
+    form.setFieldValue('amount', latestBalance.data?.value ?? 0n);
+    setOpen(true);
+  };
+
+  useEffect(() => {
+    if (props.open) openModal();
+    else setOpen(false);
+  }, [props.open]);
+
   return <Modal
     { ...props }
+    open={open}
     title="DepositModal"
     maskClosable={false}
-    afterOpenChange={(open) => {
-      if (open) {
-        form.resetFields();
-        form.setFieldValue('withdrawTime', 0);
-        form.setFieldValue('amount', balance.data?.value ?? 0n);
-      }
-    }}
     onOk={async (event) => {
       const data = await form.validateFields();
       console.log(data);
