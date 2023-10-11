@@ -7,8 +7,13 @@ import { abi } from '../../../../contracts/JIMAO.json';
 
 const address = '0x527C0b26D899A3Bc7d232ADFb4B771cD3F1c4910';
 
+export
+interface IProps extends ModalProps {
+  onNewTxn?: (data: { hash: string, name?: string }) => void;
+}
+
 export default
-function DepositModal(props: ModalProps) {
+function DepositModal(props: IProps) {
   const [open, setOpen] = useState<boolean>(false);
   const [form] = Form.useForm();
   const account = useAccount();
@@ -39,11 +44,12 @@ function DepositModal(props: ModalProps) {
   const handleDepositETH = async (event: any) => {
     try {
       const data = await form.validateFields();
-      const tx = await depositETH.writeAsync({
+      const txn = await depositETH.writeAsync({
         args: [data.withdrawTime],
         value: data.amount,
       });
       message.success('Deposit has submitted');
+      props.onNewTxn?.({ hash: txn.hash, name: 'Deposit ETH' });
       props.onCancel?.(event);
     } catch (error) {
       console.error(error);
