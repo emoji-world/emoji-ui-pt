@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useMemo } from 'react';
+import React, { ReactNode, useCallback, useEffect, useMemo } from 'react';
 import style from './index.module.scss';
 import { Button, InputNumber, Slider, Tooltip } from 'antd';
 import { formatUnits, parseUnits } from 'viem';
@@ -48,6 +48,11 @@ function TokenAmount(props: IProps) {
   const percent = useMemo(() => Math.round(balance && (value / balance * 100)), [value, balance]);
 
   const isAll = useMemo(() => props.value === props.balance, [props.value, props.balance]);
+
+  useEffect(() => {
+    if ((props.value ?? 0n) > props.balance)
+      props.onChange?.(props.balance);
+  }, [props.value, props.balance]);
 
   return <div className={style.com}>
     <div className={style.input}>
