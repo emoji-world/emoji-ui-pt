@@ -1,9 +1,8 @@
 import { Form, Modal, ModalProps, message } from 'antd';
 import TokenAmount from '../../../common/TokenAmount';
-import { useEffect, useState } from 'react';
-import ExpireTimePicker from '../../../common/ExpireTimePicker';
-import { useAccount, useBalance, useContractWrite } from 'wagmi';
+import { useContractWrite } from 'wagmi';
 import { abi } from '../../../../contracts/JIMAO.json';
+import { useEffect } from 'react';
 
 const address = '0x527C0b26D899A3Bc7d232ADFb4B771cD3F1c4910';
 
@@ -16,41 +15,45 @@ interface IProps extends ModalProps {
 export default
 function WithdrawModal(props: IProps) {
   const [form] = Form.useForm();
-  const account = useAccount();
-  const balance = useBalance({ address: account.address });
 
-  const depositETH = useContractWrite({
+  const withdrawETH = useContractWrite({
     abi,
     address,
-    functionName: 'depositETH',
+    functionName: 'changeDepositETH',
     onError: (error: any) => {
       message.error(error.shortMessage ?? error.message);
     },
   });
 
-  const handleDepositETH = async (event: any) => {
+  const handleWithdrawETH = async (event: any) => {
     try {
       const data = await form.validateFields();
-      const txn = await depositETH.writeAsync({
-        args: [data.withdrawTime],
-        value: data.amount,
-      });
-      message.success('Deposit has submitted');
-      props.onNewTxn?.({ hash: txn.hash, name: 'Deposit ETH' });
+      const txn = await withdrawETH.writeAsync({ args: [props.open.index, data.amount] });
+      message.success('Withdraw has submitted');
+      props.onNewTxn?.({ hash: txn.hash, name: 'Withdraw ETH' });
       props.onCancel?.(event);
     } catch (error) {
       console.error(error);
     }
   };
 
+  useEffect(() => {
+    if (props.open) {
+      form.resetFields();
+      form.setFieldsValue({
+        amount: props.open?.amount ?? 0n,
+      });
+    }
+  }, [props.open]);
+
   return <Modal
     { ...props }
     title="WithdrawModal"
     maskClosable={false}
     okButtonProps={{
-      loading: depositETH.isLoading,
+      loading: withdrawETH.isLoading,
     }}
-    onOk={handleDepositETH}>
+    onOk={handleWithdrawETH}>
     <Form
       form={form}
       layout="vertical">
@@ -60,8 +63,6 @@ function WithdrawModal(props: IProps) {
           balance={(props.open?.amount ?? 0n)}
           precision={18}
           precisionShow={4}
-          balanceLoading={balance.isLoading}
-          onUpdateBalance={() => balance.refetch()}
         />
       </Form.Item>
     </Form>

@@ -72,8 +72,8 @@ function Deposits() {
           {
             title: 'Actions',
             width: 160,
-            render: (record) => <Space>
-              <Button type="link" onClick={() => setWithdrawModal(record)}>Withdraw</Button>
+            render: (record, _, index) => <Space>
+              <Button type="link" onClick={() => setWithdrawModal({ ...record, index: index })}>Withdraw</Button>
               <Button type="link">Append</Button>
             </Space>,
           },
