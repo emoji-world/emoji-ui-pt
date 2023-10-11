@@ -35,7 +35,6 @@ function ExpireTimePicker(props: {
         { label: 'One Month', value: dayjs().add(1, 'months'), },
         { label: 'One Year', value: dayjs().add(1, 'years'), },
       ]}
-      placeholder="Please select WithdrawTime"
       style={{ width: '200px' }}
       disabledDate={(date) => date.isBefore(dayjs())}
     />}
