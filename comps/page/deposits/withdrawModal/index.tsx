@@ -9,28 +9,15 @@ const address = '0x527C0b26D899A3Bc7d232ADFb4B771cD3F1c4910';
 
 export
 interface IProps extends ModalProps {
+  open: any;
   onNewTxn?: (data: { hash: string, name?: string }) => void;
 }
 
 export default
 function WithdrawModal(props: IProps) {
-  const [open, setOpen] = useState<boolean>(false);
   const [form] = Form.useForm();
   const account = useAccount();
   const balance = useBalance({ address: account.address });
-
-  const openModal = async () => {
-    const latestBalance = await balance.refetch();
-    form.resetFields();
-    form.setFieldValue('withdrawTime', 0);
-    form.setFieldValue('amount', latestBalance.data?.value ?? 0n);
-    setOpen(true);
-  };
-
-  useEffect(() => {
-    if (props.open) openModal();
-    else setOpen(false);
-  }, [props.open]);
 
   const depositETH = useContractWrite({
     abi,
@@ -58,8 +45,7 @@ function WithdrawModal(props: IProps) {
 
   return <Modal
     { ...props }
-    open={open}
-    title="DepositModal"
+    title="WithdrawModal"
     maskClosable={false}
     okButtonProps={{
       loading: depositETH.isLoading,
@@ -68,14 +54,11 @@ function WithdrawModal(props: IProps) {
     <Form
       form={form}
       layout="vertical">
-      <Form.Item label="WithdrawTime" name="withdrawTime">
-        <ExpireTimePicker />
-      </Form.Item>
       <Form.Item label="Amount" name="amount">
         <TokenAmount
           symbol="ETH"
-          balance={(balance.data?.value ?? 0n)}
-          precision={Number(balance.data?.decimals ?? 0)}
+          balance={(props.open?.amount ?? 0n)}
+          precision={18}
           precisionShow={4}
           balanceLoading={balance.isLoading}
           onUpdateBalance={() => balance.refetch()}

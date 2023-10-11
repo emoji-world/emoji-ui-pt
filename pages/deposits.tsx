@@ -7,6 +7,7 @@ import { abi } from '../contracts/JIMAO.json';
 import { formatEther } from 'viem';
 import dayjs from 'dayjs';
 import DepositModal from '../comps/page/deposits/depositModal';
+import WithdrawModal from '../comps/page/deposits/withdrawModal';
 
 (BigInt.prototype as any).toJSON = function () {
   return this.toString();
@@ -23,6 +24,7 @@ function Deposits() {
   const [pageSize, setPageSize] = useState<number>(5);
 
   const [depositModal, setDepositModal] = useState<boolean>(false);
+  const [withdrawModal, setWithdrawModal] = useState<any>(null);
 
   const myDeposits = useContractRead({
     abi,
@@ -70,8 +72,8 @@ function Deposits() {
           {
             title: 'Actions',
             width: 160,
-            render: () => <Space>
-              <Button type="link">Withdraw</Button>
+            render: (record) => <Space>
+              <Button type="link" onClick={() => setWithdrawModal(record)}>Withdraw</Button>
               <Button type="link">Append</Button>
             </Space>,
           },
@@ -94,6 +96,10 @@ function Deposits() {
     <DepositModal
       open={depositModal}
       onCancel={() => setDepositModal(false)}
+    />
+    <WithdrawModal
+      open={withdrawModal}
+      onCancel={() => setWithdrawModal(null)}
     />
   </div>;
 }
