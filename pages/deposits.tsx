@@ -91,9 +91,9 @@ function Deposits() {
         }}
       />
     </div>
-    <DepositModal
+    {depositModal && <DepositModal
       open={depositModal}
       onCancel={() => setDepositModal(false)}
-    />
+    />}
   </div>;
 }

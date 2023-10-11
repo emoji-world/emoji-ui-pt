@@ -15,8 +15,18 @@ function DepositModal(props: ModalProps) {
   return <Modal
     { ...props }
     title="DepositModal"
-    maskClosable={false}>
-    {/* <pre>{JSON.stringify(balance, null, 2)}</pre> */}
+    maskClosable={false}
+    afterOpenChange={(open) => {
+      if (open) {
+        form.resetFields();
+        form.setFieldValue('withdrawTime', 0);
+        form.setFieldValue('amount', balance.data?.value ?? 0n);
+      }
+    }}
+    onOk={async (event) => {
+      const data = await form.validateFields();
+      console.log(data);
+    }}>
     <Form
       form={form}
       layout="vertical">
