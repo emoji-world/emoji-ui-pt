@@ -9,7 +9,7 @@ const address = '0x527C0b26D899A3Bc7d232ADFb4B771cD3F1c4910';
 export
 interface IProps extends ModalProps {
   open: any;
-  onNewTxn?: (data: { hash: string, name?: string }) => void;
+  onNewTxn?: (data: { hash: `0x${string}`, name?: string }) => void;
 }
 
 export default
