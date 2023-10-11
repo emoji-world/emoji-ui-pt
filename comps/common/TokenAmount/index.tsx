@@ -1,7 +1,8 @@
 import React, { ReactNode, useCallback, useMemo } from 'react';
 import style from './index.module.scss';
-import { Button, InputNumber, Slider } from 'antd';
+import { Button, InputNumber, Slider, Tooltip } from 'antd';
 import { formatUnits, parseUnits } from 'viem';
+import { SyncOutlined } from '@ant-design/icons';
 
 function truncatePrecision(num: number | string, precision: number) {
   const numSegs = num.toString().split('.');
@@ -18,6 +19,8 @@ interface IProps {
   children?: ReactNode,
   value?: bigint;
   onChange?: (value: bigint) => void;
+  balanceLoading?: boolean;
+  onUpdateBalance?: () => void;
 }
 
 export default
@@ -64,7 +67,18 @@ function TokenAmount(props: IProps) {
     </div>
     <div className={style.info}>
       <span></span>
-      <span>Balance {balanceShow}</span>
+      <span>
+        Balance {balanceShow}&nbsp;
+        <Tooltip
+          placement="bottom"
+          title="Refresh balance">
+          <SyncOutlined
+            className={style.refresh}
+            spin={props.balanceLoading}
+            onClick={() => props.onUpdateBalance?.()}
+          />
+        </Tooltip>
+      </span>
     </div>
     <div className={style.slider}>
       <Slider
