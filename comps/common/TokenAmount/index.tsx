@@ -19,6 +19,7 @@ interface IProps {
   children?: ReactNode,
   value?: bigint;
   onChange?: (value: bigint) => void;
+  showBalanceLoading?: boolean;
   balanceLoading?: boolean;
   onUpdateBalance?: () => void;
 }
@@ -73,8 +74,8 @@ function TokenAmount(props: IProps) {
     <div className={style.info}>
       <span></span>
       <span>
-        Balance {balanceShow}&nbsp;
-        <Tooltip
+        Balance {balanceShow}
+        {props.showBalanceLoading && <>&nbsp;<Tooltip
           placement="bottom"
           title="Refresh balance">
           <SyncOutlined
@@ -82,7 +83,7 @@ function TokenAmount(props: IProps) {
             spin={props.balanceLoading}
             onClick={() => props.onUpdateBalance?.()}
           />
-        </Tooltip>
+        </Tooltip></>}
       </span>
     </div>
     <div className={style.slider}>

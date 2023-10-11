@@ -77,6 +77,7 @@ function DepositModal(props: IProps) {
           balance={(balance.data?.value ?? 0n)}
           precision={Number(balance.data?.decimals ?? 0)}
           precisionShow={4}
+          showBalanceLoading
           balanceLoading={balance.isLoading}
           onUpdateBalance={() => balance.refetch()}
         />
