@@ -8,6 +8,7 @@ import { formatEther } from 'viem';
 import dayjs from 'dayjs';
 import DepositModal from '../comps/page/deposits/depositModal';
 import WithdrawModal from '../comps/page/deposits/withdrawModal';
+import AppendModal from '../comps/page/deposits/appendModal';
 
 (BigInt.prototype as any).toJSON = function () {
   return this.toString();
@@ -25,6 +26,7 @@ function Deposits() {
 
   const [depositModal, setDepositModal] = useState<boolean>(false);
   const [withdrawModal, setWithdrawModal] = useState<any>(null);
+  const [appendModal, setAppendModal] = useState<any>(null);
 
   const myDeposits = useContractRead({
     abi,
@@ -77,7 +79,10 @@ function Deposits() {
                 ...record,
                 index: (Number(myDepositsData.pageNum) - 1) * Number(myDepositsData.pageSize) + index,
               })}>Withdraw</Button>
-              <Button type="link">Append</Button>
+              <Button type="link" onClick={() => setAppendModal({
+                ...record,
+                index: (Number(myDepositsData.pageNum) - 1) * Number(myDepositsData.pageSize) + index,
+              })}>Append</Button>
             </Space>,
           },
         ]}
@@ -103,6 +108,10 @@ function Deposits() {
     <WithdrawModal
       open={withdrawModal}
       onCancel={() => setWithdrawModal(null)}
+    />
+    <AppendModal
+      open={appendModal}
+      onCancel={() => setAppendModal(null)}
     />
   </div>;
 }
