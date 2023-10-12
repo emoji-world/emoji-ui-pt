@@ -34,17 +34,18 @@ function Deposits() {
     functionName: 'myDeposits',
     args: [account.address, pageNum, pageSize],
     keepPreviousData: true,
+    watch: true,
   });
   const myDepositsData = useMemo(() => (myDeposits.data ?? { }) as any, [myDeposits]);
 
   const [hash, setHash] = useState<`0x${string}` | undefined>(undefined);
-  useWaitForTransaction({
-    hash,
-    onSettled: () => {
-      message.info('list update');
-      myDeposits.refetch();
-    },
-  });
+  // useWaitForTransaction({
+  //   hash,
+  //   onSettled: () => {
+  //     message.info('list update');
+  //     myDeposits.refetch();
+  //   },
+  // });
 
   useEffect(() => setIsClient(true), []);
   if (!isClient) return null;
