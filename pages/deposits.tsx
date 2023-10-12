@@ -51,6 +51,9 @@ function Deposits() {
   //   },
   // });
 
+  const realIndex = (index: number) =>
+    (Number(myDepositsData.pageNum) - 1) * Number(myDepositsData.pageSize) + index;
+
   useEffect(() => setIsClient(true), []);
   if (!isClient) return null;
   return <div className={style.page}>
@@ -83,7 +86,7 @@ function Deposits() {
             title: 'WithdrawTime',
             dataIndex: 'withdrawTime',
             width: 180,
-            render: (value: bigint) => dayjs(Number(value)).format('YYYY-MM-DD HH:mm:ss'),
+            render: (value: bigint) => dayjs.unix(Number(value)).format('YYYY-MM-DD HH:mm:ss'),
           },
           {
             title: 'Actions',
@@ -97,13 +100,13 @@ function Deposits() {
                 )}
                 onClick={() => setWithdrawModal({
                   ...record,
-                  index: (Number(myDepositsData.pageNum) - 1) * Number(myDepositsData.pageSize) + index,
+                  index: realIndex(index),
                 })}>
                 Withdraw
               </Button>
               <Button type="link" onClick={() => setAppendModal({
                 ...record,
-                index: (Number(myDepositsData.pageNum) - 1) * Number(myDepositsData.pageSize) + index,
+                index: realIndex(index),
               })}>Append</Button>
             </Space>,
           },
