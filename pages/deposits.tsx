@@ -41,8 +41,12 @@ function Deposits() {
   const [hash, setHash] = useState<`0x${string}` | undefined>(undefined);
   // useWaitForTransaction({
   //   hash,
+  //   onSuccess: () => {
+  //     message.info('list update1');
+  //     myDeposits.refetch();
+  //   },
   //   onSettled: () => {
-  //     message.info('list update');
+  //     message.info('list update2');
   //     myDeposits.refetch();
   //   },
   // });
@@ -85,10 +89,18 @@ function Deposits() {
             title: 'Actions',
             width: 160,
             render: (record, _, index) => <Space>
-              <Button type="link" onClick={() => setWithdrawModal({
-                ...record,
-                index: (Number(myDepositsData.pageNum) - 1) * Number(myDepositsData.pageSize) + index,
-              })}>Withdraw</Button>
+              <Button
+                type="link"
+                disabled={(
+                  record.amount <= 0 ||
+                  dayjs().unix() < Number(record.withdrawTime)
+                )}
+                onClick={() => setWithdrawModal({
+                  ...record,
+                  index: (Number(myDepositsData.pageNum) - 1) * Number(myDepositsData.pageSize) + index,
+                })}>
+                Withdraw
+              </Button>
               <Button type="link" onClick={() => setAppendModal({
                 ...record,
                 index: (Number(myDepositsData.pageNum) - 1) * Number(myDepositsData.pageSize) + index,
